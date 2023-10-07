@@ -1,0 +1,147 @@
+[
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Body",
+        "importPath": "fastapi.params",
+        "description": "fastapi.params",
+        "isExtraImport": true,
+        "detail": "fastapi.params",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "randrange",
+        "importPath": "random",
+        "description": "random",
+        "isExtraImport": true,
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "kind": 6,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\ndb_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\"},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\"}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "create_posts",
+        "kind": 2,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "def create_posts(post:Post):\n    post_dict = post.dict()\n    post_dict['id'] = randrange(0,999999) \n    db_posts.append(post_dict)\n    return {\"data\": post_dict}\ndef find_post(id):\n    for p in db_posts:\n        if p['id'] == id:\n            return p\n@app.get(\"/posts/{id}\")",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "find_post",
+        "kind": 2,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "def find_post(id):\n    for p in db_posts:\n        if p['id'] == id:\n            return p\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, responce: Response):\n    post = find_post(int(id))\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\n                            detail=f\"Post with {id} not found\")",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_post",
+        "kind": 2,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "def get_post(id: int, responce: Response):\n    post = find_post(int(id))\n    if not post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\n                            detail=f\"Post with {id} not found\")\n        #responce.status_code = status.HTTP_404_NOT_FOUND\n        #return {\"message\": f\"Post with {id} not found\"}\n    return {\"text\": post}\ndef find_index(id):\n    for index, p in enumerate(db_posts):",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "find_index",
+        "kind": 2,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "def find_index(id):\n    for index, p in enumerate(db_posts):\n        if p['id'] == id:\n            return index\n@app.delete(\"/posts/{id}\")\ndef delete_post(id: int):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f\"ID {id} dose not exist\")\n    db_posts.pop(index)",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "delete_post",
+        "kind": 2,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "def delete_post(id: int):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f\"ID {id} dose not exist\")\n    db_posts.pop(index)\n    return Response(status_code=status.HTTP_204_NO_CONTENT)\n@app.put('/posts/{id}')\ndef patch_update(id: int, post: Post):\n    index = find_index(id)\n    if index == None:",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "patch_update",
+        "kind": 2,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "def patch_update(id: int, post: Post):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f'ID {id} dose not exist')\n    post_dict = post.dict()\n    post_dict['id'] = id\n    db_posts[index] = post_dict\n    return {'data': post_dict}",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\ndb_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\"},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\"}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "db_posts",
+        "kind": 5,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "db_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\"},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\"}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():\n    return {\"Data\": db_posts}\n@app.post(\"/createposts\",status_code=status.HTTP_201_CREATED)\ndef create_posts(post:Post):",
+        "detail": "app.main",
+        "documentation": {}
+    }
+]
