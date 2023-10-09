@@ -50,14 +50,6 @@ ReDoc: http://localhost:8000/redoc
 
 We welcome contributions! If you'd like to contribute to this project, please follow our contributing guidelines.
 
-## License
-
------NONE-----
-
 ## Contact
 
 If you have questions or need further assistance, feel free to contact us at sakthir.developer@gmail.com.
-
-## Acknowledgments
-
-We'd like to thank the FastAPI community and all contributors.
