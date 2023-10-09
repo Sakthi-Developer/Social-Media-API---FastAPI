@@ -44,11 +44,11 @@ We welcome contributions! If you'd like to contribute to this project, please fo
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+-----NONE-----
 
 ## Contact
 
-If you have questions or need further assistance, feel free to contact us at your-email@example.com.
+If you have questions or need further assistance, feel free to contact us at sakthir.developer@gmail.com.
 
 ## Acknowledgments
 
