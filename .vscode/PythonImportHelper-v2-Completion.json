@@ -40,6 +40,15 @@
         "documentation": {}
     },
     {
+        "label": "psycopg2",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "psycopg2",
+        "description": "psycopg2",
+        "detail": "psycopg2",
+        "documentation": {}
+    },
+    {
         "label": "BaseModel",
         "importPath": "pydantic",
         "description": "pydantic",
@@ -61,6 +70,24 @@
         "description": "random",
         "isExtraImport": true,
         "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "psycopg2,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "psycopg2.",
+        "description": "psycopg2.",
+        "detail": "psycopg2.",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
         "documentation": {}
     },
     {
@@ -131,7 +158,7 @@
         "kind": 5,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    rating: float\ndb_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\",\"published\": True,\"rating\": 4.5},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\",\"published\": True,\"rating\": 4.5}]\n@app.get(\"/\")\nasync def root():",
+        "peekOfCode": "app = FastAPI()\nwhile True:\n    try:\n        connection = psycopg2.connect(host = 'localhost', database = 'fastapi', user = 'postgres', password = '197300',cursor_factory=psycopg2.extras.DictCursor)\n        cursor = connection.cursor()\n        print(\"Succesfully connected to the Database\")\n        break\n    except Exception as error:\n        print(\"Truble Connecting to the Database\")\n        print(error)",
         "detail": "app.main",
         "documentation": {}
     },
@@ -140,7 +167,7 @@
         "kind": 5,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "db_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\",\"published\": True,\"rating\": 4.5},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\",\"published\": True,\"rating\": 4.5}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():\n    return {\"Data\": db_posts}\n@app.post(\"/createposts\",status_code=status.HTTP_201_CREATED)\ndef create_posts(post:Post):",
+        "peekOfCode": "db_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\",\"published\": True,\"rating\": 4.5},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\",\"published\": True,\"rating\": 4.5}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    print(posts)",
         "detail": "app.main",
         "documentation": {}
     }

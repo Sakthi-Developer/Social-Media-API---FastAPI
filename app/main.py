@@ -1,10 +1,26 @@
 from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.params import Body
+import psycopg2
 from pydantic import BaseModel
 from typing import Optional
 from random import randrange
+import psycopg2, psycopg2.extras
+import time 
 
 app = FastAPI()
+
+while True:
+    try:
+        connection = psycopg2.connect(host = 'localhost', database = 'fastapi', user = 'postgres', password = '197300',cursor_factory=psycopg2.extras.DictCursor)
+        cursor = connection.cursor()
+        print("Succesfully connected to the Database")
+        break
+
+    except Exception as error:
+
+        print("Truble Connecting to the Database")
+        print(error)
+        time.sleep(3)
 
 class Post(BaseModel):
     title: str
@@ -21,7 +37,10 @@ async def root():
 
 @app.get("/posts")
 async def get_posts():
-    return {"Data": db_posts}
+    cursor.execute("""SELECT * FROM posts""")
+    posts = cursor.fetchall()
+    print(posts)
+    return {"Data": posts}
 
 @app.post("/createposts",status_code=status.HTTP_201_CREATED)
 def create_posts(post:Post):
