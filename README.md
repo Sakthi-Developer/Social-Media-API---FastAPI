@@ -1,4 +1,5 @@
-****Social Media API - FastAPI****
+__Social Media API - FastAPI__
+
 **Introduction**
 This is a FastAPI-based API for a social media platform, designed to provide essential functionality for users, posts, comments, and more. It offers a high-performance, asynchronous API for developers looking to build social media applications or services.
 
