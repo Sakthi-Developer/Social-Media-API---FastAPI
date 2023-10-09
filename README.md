@@ -19,13 +19,17 @@ RESTful API: Follows RESTful principles for clear and intuitive endpoints.
 
 To get started with this API, follow these steps:
 
-Installation: Clone this repository and install the necessary dependencies.
+**Installation:** 
+
+Clone this repository and install the necessary dependencies.
 git clone https://github.com/your-username/Social-Media-API---FastAPI.git
 cd Social-Media-API---FastAPI
 pip install -r requirements.txt
 Configuration: Configure your environment variables and settings (e.g., database, authentication).
 
-Run the API: Start the FastAPI server.
+**Run the API:** 
+
+Start the FastAPI server.
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 API Documentation: Access the API documentation by visiting http://localhost:8000/docs or http://localhost:8000/redoc.
 
