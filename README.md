@@ -52,4 +52,4 @@ If you have questions or need further assistance, feel free to contact us at sak
 
 ## Acknowledgments
 
-We'd like to thank the FastAPI community and all contributors for making this project possible.
+We'd like to thank the FastAPI community and all contributors.
