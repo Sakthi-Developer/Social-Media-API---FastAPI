@@ -68,7 +68,7 @@
         "kind": 6,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\ndb_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\"},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\"}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():",
+        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    rating: float\ndb_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\",\"published\": True,\"rating\": 4.5},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\",\"published\": True,\"rating\": 4.5}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}",
         "detail": "app.main",
         "documentation": {}
     },
@@ -131,7 +131,7 @@
         "kind": 5,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\ndb_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\"},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\"}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")",
+        "peekOfCode": "app = FastAPI()\nclass Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    rating: float\ndb_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\",\"published\": True,\"rating\": 4.5},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\",\"published\": True,\"rating\": 4.5}]\n@app.get(\"/\")\nasync def root():",
         "detail": "app.main",
         "documentation": {}
     },
@@ -140,7 +140,7 @@
         "kind": 5,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "db_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\"},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\"}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():\n    return {\"Data\": db_posts}\n@app.post(\"/createposts\",status_code=status.HTTP_201_CREATED)\ndef create_posts(post:Post):",
+        "peekOfCode": "db_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\",\"published\": True,\"rating\": 4.5},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\",\"published\": True,\"rating\": 4.5}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():\n    return {\"Data\": db_posts}\n@app.post(\"/createposts\",status_code=status.HTTP_201_CREATED)\ndef create_posts(post:Post):",
         "detail": "app.main",
         "documentation": {}
     }

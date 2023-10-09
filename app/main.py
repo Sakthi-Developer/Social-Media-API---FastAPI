@@ -9,9 +9,11 @@ app = FastAPI()
 class Post(BaseModel):
     title: str
     content: str
+    published: bool
+    rating: float
   
-db_posts = [{"id": 1, "title": "Best food in KFC", "content": "Burer, Chiken fry, Cocacola"},
-             {"id": 2, "title": "Fruit that good for heart", "content": "bananas, oranges, grapes"}]
+db_posts = [{"id": 1, "title": "Best food in KFC", "content": "Burer, Chiken fry, Cocacola","published": True,"rating": 4.5},
+             {"id": 2, "title": "Fruit that good for heart", "content": "bananas, oranges, grapes","published": True,"rating": 4.5}]
 
 @app.get("/")
 async def root():
