@@ -44,10 +44,12 @@ async def get_posts():
 
 @app.post("/createposts",status_code=status.HTTP_201_CREATED)
 def create_posts(post:Post):
-    post_dict = post.dict()
-    post_dict['id'] = randrange(0,999999) 
-    db_posts.append(post_dict)
-    return {"data": post_dict}
+    cursor.execute("""INSERT INTO posts (title,content,published,rating) VALUES(%s,%s,%s,%s) RETURNING * """,
+                   (post.title,post.content,post.published,post.rating))
+    new_crted_post = cursor.fetchone()
+    connection.commit()
+
+    return {"data": new_crted_post}
 
 def find_post(id):
     for p in db_posts:
@@ -56,13 +58,16 @@ def find_post(id):
         
 @app.get("/posts/{id}")
 def get_post(id: int, responce: Response):
-    post = find_post(int(id))
-    if not post:
+    cursor.execute("""SELECT * FROM posts WHERE id = %s """, str(id))
+    fecth_post = cursor.fetchone()
+    
+    # post = find_post(int(id))
+    if not fecth_post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Post with {id} not found")
-        #responce.status_code = status.HTTP_404_NOT_FOUND
-        #return {"message": f"Post with {id} not found"}
-    return {"text": post}
+                              detail=f"Post with {id} not found")
+        responce.status_code = status.HTTP_404_NOT_FOUND
+        return {"message": f"Post with {id} not found"}
+    return {"text": fecth_post}
 
 def find_index(id):
     for index, p in enumerate(db_posts):
