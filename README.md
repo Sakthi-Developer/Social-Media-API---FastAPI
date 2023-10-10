@@ -20,7 +20,7 @@ This is a FastAPI-based API for a social media platform, designed to provide ess
 
 **High Performance:** Built with FastAPI and asynchronous support for efficiency.
 
-*RESTful API:* Follows RESTful principles for clear and intuitive endpoints.
+**RESTful API:** Follows RESTful principles for clear and intuitive endpoints.
 
 ## Getting Started
 
