@@ -27,9 +27,6 @@ class Post(BaseModel):
     content: str
     published: bool
     rating: float
-  
-db_posts = [{"id": 1, "title": "Best food in KFC", "content": "Burer, Chiken fry, Cocacola","published": True,"rating": 4.5},
-             {"id": 2, "title": "Fruit that good for heart", "content": "bananas, oranges, grapes","published": True,"rating": 4.5}]
 
 @app.get("/")
 async def root():
@@ -50,11 +47,6 @@ def create_posts(post:Post):
 
     return {"data": new_crted_post}
 
-def find_post(id):
-    for p in db_posts:
-        if p['id'] == id:
-            return p
-        
 @app.get("/posts/{id}")
 def get_post(id: int, responce: Response):
     cursor.execute("""SELECT * FROM posts WHERE id = %s """, (str(id),))
@@ -66,11 +58,6 @@ def get_post(id: int, responce: Response):
                               detail=f"Post with {id} not found")
     return {"text": fecth_post}
 
-def find_index(id):
-    for index, p in enumerate(db_posts):
-        if p['id'] == id:
-            return index
-
 @app.delete("/posts/{id}")
 def delete_post(id: int):
     cursor.execute("""DELETE FROM posts WHERE id = %s """,((id),))
@@ -81,10 +68,11 @@ def delete_post(id: int):
 
 @app.put('/posts/{id}')
 def patch_update(id: int, post: Post):
-    index = find_index(id)
-    if index == None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f'ID {id} dose not exist')
-    post_dict = post.dict()
-    post_dict['id'] = id
-    db_posts[index] = post_dict
-    return {'data': post_dict}
+    cursor.execute("""UPDATE posts SET title=%s, content=%s, published=%s, rating=%s  WHERE id = %s RETURNING *""",
+                   (post.title, post.content, post.published, post.rating, str(id)),)
+    updated_posts = cursor.fetchone()
+    connection.commit()
+    if not updated_posts:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                              detail=f"Post with {id} not found")
+    return {'data': updated_posts}

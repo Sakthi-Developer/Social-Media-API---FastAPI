@@ -95,7 +95,7 @@
         "kind": 6,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    rating: float\ndb_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\",\"published\": True,\"rating\": 4.5},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\",\"published\": True,\"rating\": 4.5}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}",
+        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    rating: float\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():",
         "detail": "app.main",
         "documentation": {}
     },
@@ -104,16 +104,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def create_posts(post:Post):\n    cursor.execute(\"\"\"INSERT INTO posts (title,content,published,rating) VALUES(%s,%s,%s,%s) RETURNING * \"\"\",\n                   (post.title,post.content,post.published,post.rating))\n    new_crted_post = cursor.fetchone()\n    connection.commit()\n    return {\"data\": new_crted_post}\ndef find_post(id):\n    for p in db_posts:\n        if p['id'] == id:\n            return p",
-        "detail": "app.main",
-        "documentation": {}
-    },
-    {
-        "label": "find_post",
-        "kind": 2,
-        "importPath": "app.main",
-        "description": "app.main",
-        "peekOfCode": "def find_post(id):\n    for p in db_posts:\n        if p['id'] == id:\n            return p\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, responce: Response):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id),))\n    fecth_post = cursor.fetchone()\n    # post = find_post(int(id))\n    if not fecth_post:",
+        "peekOfCode": "def create_posts(post:Post):\n    cursor.execute(\"\"\"INSERT INTO posts (title,content,published,rating) VALUES(%s,%s,%s,%s) RETURNING * \"\"\",\n                   (post.title,post.content,post.published,post.rating))\n    new_crted_post = cursor.fetchone()\n    connection.commit()\n    return {\"data\": new_crted_post}\n@app.get(\"/posts/{id}\")\ndef get_post(id: int, responce: Response):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id),))\n    fecth_post = cursor.fetchone()",
         "detail": "app.main",
         "documentation": {}
     },
@@ -122,16 +113,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def get_post(id: int, responce: Response):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id),))\n    fecth_post = cursor.fetchone()\n    # post = find_post(int(id))\n    if not fecth_post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\n                              detail=f\"Post with {id} not found\")\n    return {\"text\": fecth_post}\ndef find_index(id):\n    for index, p in enumerate(db_posts):",
-        "detail": "app.main",
-        "documentation": {}
-    },
-    {
-        "label": "find_index",
-        "kind": 2,
-        "importPath": "app.main",
-        "description": "app.main",
-        "peekOfCode": "def find_index(id):\n    for index, p in enumerate(db_posts):\n        if p['id'] == id:\n            return index\n@app.delete(\"/posts/{id}\")\ndef delete_post(id: int):\n    cursor.execute(\"\"\"DELETE FROM posts WHERE id = %s \"\"\",((id),))\n    connection.commit()\n    if cursor.rowcount == 0:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f\"ID {id} dose not exist\")",
+        "peekOfCode": "def get_post(id: int, responce: Response):\n    cursor.execute(\"\"\"SELECT * FROM posts WHERE id = %s \"\"\", (str(id),))\n    fecth_post = cursor.fetchone()\n    # post = find_post(int(id))\n    if not fecth_post:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\n                              detail=f\"Post with {id} not found\")\n    return {\"text\": fecth_post}\n@app.delete(\"/posts/{id}\")\ndef delete_post(id: int):",
         "detail": "app.main",
         "documentation": {}
     },
@@ -140,7 +122,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def delete_post(id: int):\n    cursor.execute(\"\"\"DELETE FROM posts WHERE id = %s \"\"\",((id),))\n    connection.commit()\n    if cursor.rowcount == 0:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f\"ID {id} dose not exist\")\n    return Response(status_code=status.HTTP_204_NO_CONTENT)\n@app.put('/posts/{id}')\ndef patch_update(id: int, post: Post):\n    index = find_index(id)\n    if index == None:",
+        "peekOfCode": "def delete_post(id: int):\n    cursor.execute(\"\"\"DELETE FROM posts WHERE id = %s \"\"\",((id),))\n    connection.commit()\n    if cursor.rowcount == 0:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f\"ID {id} dose not exist\")\n    return Response(status_code=status.HTTP_204_NO_CONTENT)\n@app.put('/posts/{id}')\ndef patch_update(id: int, post: Post):\n    cursor.execute(\"\"\"UPDATE posts SET title=%s, content=%s, published=%s, rating=%s  WHERE id = %s RETURNING *\"\"\",\n                   (post.title, post.content, post.published, post.rating, str(id)),)",
         "detail": "app.main",
         "documentation": {}
     },
@@ -149,7 +131,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def patch_update(id: int, post: Post):\n    index = find_index(id)\n    if index == None:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = f'ID {id} dose not exist')\n    post_dict = post.dict()\n    post_dict['id'] = id\n    db_posts[index] = post_dict\n    return {'data': post_dict}",
+        "peekOfCode": "def patch_update(id: int, post: Post):\n    cursor.execute(\"\"\"UPDATE posts SET title=%s, content=%s, published=%s, rating=%s  WHERE id = %s RETURNING *\"\"\",\n                   (post.title, post.content, post.published, post.rating, str(id)),)\n    updated_posts = cursor.fetchone()\n    connection.commit()\n    if not updated_posts:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\n                              detail=f\"Post with {id} not found\")\n    return {'data': updated_posts}",
         "detail": "app.main",
         "documentation": {}
     },
@@ -159,15 +141,6 @@
         "importPath": "app.main",
         "description": "app.main",
         "peekOfCode": "app = FastAPI()\nwhile True:\n    try:\n        connection = psycopg2.connect(host = 'localhost', database = 'fastapi', user = 'postgres', password = '197300',cursor_factory=psycopg2.extras.RealDictCursor)\n        cursor = connection.cursor()\n        print(\"Succesfully connected to the Database\")\n        break\n    except Exception as error:\n        print(\"Truble Connecting to the Database\")\n        print(error)",
-        "detail": "app.main",
-        "documentation": {}
-    },
-    {
-        "label": "db_posts",
-        "kind": 5,
-        "importPath": "app.main",
-        "description": "app.main",
-        "peekOfCode": "db_posts = [{\"id\": 1, \"title\": \"Best food in KFC\", \"content\": \"Burer, Chiken fry, Cocacola\",\"published\": True,\"rating\": 4.5},\n             {\"id\": 2, \"title\": \"Fruit that good for heart\", \"content\": \"bananas, oranges, grapes\",\"published\": True,\"rating\": 4.5}]\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return {\"Data\": posts}",
         "detail": "app.main",
         "documentation": {}
     }
