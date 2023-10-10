@@ -33,6 +33,7 @@ git clone [https://github.com/Sakthi-Developer/Social-Media-API---FastAPI.git](h
 ```
 cd Social-Media-API---FastAPI                                                                                                                           
 pip install -r requirements.txt
+
 ```
 **Configuration:** 
 
