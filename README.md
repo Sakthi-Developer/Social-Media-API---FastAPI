@@ -30,10 +30,10 @@ To get started with this API, follow these steps:
 
 Clone this repository and install the necessary dependencies.
 git clone [https://github.com/Sakthi-Developer/Social-Media-API---FastAPI.git](https://github.com/Sakthi-Developer/Social-Media-API---FastAPI)  
-
+```
 cd Social-Media-API---FastAPI                                                                                                                           
 pip install -r requirements.txt
-
+```
 **Configuration:** 
 
 Configure your environment variables and settings (e.g., database, authentication).
