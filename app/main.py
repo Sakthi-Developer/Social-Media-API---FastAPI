@@ -39,7 +39,6 @@ async def root():
 async def get_posts():
     cursor.execute("""SELECT * FROM posts""")
     posts = cursor.fetchall()
-    print(posts)
     return {"Data": posts}
 
 @app.post("/createposts",status_code=status.HTTP_201_CREATED)
@@ -58,15 +57,13 @@ def find_post(id):
         
 @app.get("/posts/{id}")
 def get_post(id: int, responce: Response):
-    cursor.execute("""SELECT * FROM posts WHERE id = %s """, str(id))
+    cursor.execute("""SELECT * FROM posts WHERE id = %s """, (str(id),))
     fecth_post = cursor.fetchone()
     
     # post = find_post(int(id))
     if not fecth_post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                               detail=f"Post with {id} not found")
-        responce.status_code = status.HTTP_404_NOT_FOUND
-        return {"message": f"Post with {id} not found"}
     return {"text": fecth_post}
 
 def find_index(id):
@@ -76,10 +73,10 @@ def find_index(id):
 
 @app.delete("/posts/{id}")
 def delete_post(id: int):
-    index = find_index(id)
-    if index == None:
+    cursor.execute("""DELETE FROM posts WHERE id = %s """,((id),))
+    connection.commit()
+    if cursor.rowcount == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"ID {id} dose not exist")
-    db_posts.pop(index)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 @app.put('/posts/{id}')
