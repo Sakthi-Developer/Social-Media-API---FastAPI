@@ -6,14 +6,21 @@ This is a FastAPI-based API for a social media platform, designed to provide ess
 
 ## Features
 
-User Management: Create, update, and authenticate users.
-Post Creation: Allow users to create and manage their posts.
-Comments: Enable users to comment on posts.
-Likes and Reactions: Implement liking and reactions on posts.
-Followers and Following: Enable users to follow and unfollow others.
-Search and Discovery: Implement search and discovery features.
-High Performance: Built with FastAPI and asynchronous support for efficiency.
-RESTful API: Follows RESTful principles for clear and intuitive endpoints.
+**User Management:** Create, update, and authenticate users.
+
+**Post Creation:** Allow users to create and manage their posts.
+
+**Comments:** Enable users to comment on posts.
+
+**Likes and Reactions:** Implement liking and reactions on posts.
+
+**Followers and Following:** Enable users to follow and unfollow others.
+
+**Search and Discovery:** Implement search and discovery features.
+
+**High Performance:** Built with FastAPI and asynchronous support for efficiency.
+
+**RESTful API:** Follows RESTful principles for clear and intuitive endpoints.
 
 ## Getting Started
 
@@ -23,10 +30,12 @@ To get started with this API, follow these steps:
 
 Clone this repository and install the necessary dependencies.
 git clone [https://github.com/Sakthi-Developer/Social-Media-API---FastAPI.git](https://github.com/Sakthi-Developer/Social-Media-API---FastAPI)  
-
-cd Social-Media-API---FastAPI                                                                                                                           
+```
+cd Social-Media-API---FastAPI
+```
+```                                                                                                                         
 pip install -r requirements.txt
-
+```
 **Configuration:** 
 
 Configure your environment variables and settings (e.g., database, authentication).
