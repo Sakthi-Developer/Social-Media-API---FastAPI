@@ -7,6 +7,7 @@ from random import randrange
 import psycopg2, psycopg2.extras
 import time 
 
+
 app = FastAPI()
 
 while True:
