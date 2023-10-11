@@ -1,6 +1,47 @@
 [
     {
+        "label": "sqlalchemy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
         "label": "create_engine",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "Column",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "Integer",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "String",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "Boolean",
         "importPath": "sqlalchemy",
         "description": "sqlalchemy",
         "isExtraImport": true,
@@ -17,6 +58,14 @@
     },
     {
         "label": "sessionmaker",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "Session",
         "importPath": "sqlalchemy.orm",
         "description": "sqlalchemy.orm",
         "isExtraImport": true,
@@ -49,6 +98,14 @@
     },
     {
         "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Depends",
         "importPath": "fastapi",
         "description": "fastapi",
         "isExtraImport": true,
@@ -119,7 +176,7 @@
         "kind": 5,
         "importPath": "app.database",
         "description": "app.database",
-        "peekOfCode": "SQLALCHEMY_DATABASE_URL = \"postgresql://postgres:197300@localhost/fastapi\"\nengine =create_engine(SQLALCHEMY_DATABASE_URL)\nSessionLocal = sessionmaker(autoflush=False, autocommit=False, bind=engine)",
+        "peekOfCode": "SQLALCHEMY_DATABASE_URL = \"postgresql://postgres:197300@localhost/fastapi\"\nengine =create_engine(SQLALCHEMY_DATABASE_URL)\nSessionLocal = sessionmaker(autoflush=False, autocommit=False, bind=engine)\nBase = declarative_base()",
         "detail": "app.database",
         "documentation": {}
     },
@@ -128,7 +185,16 @@
         "kind": 5,
         "importPath": "app.database",
         "description": "app.database",
-        "peekOfCode": "SessionLocal = sessionmaker(autoflush=False, autocommit=False, bind=engine)",
+        "peekOfCode": "SessionLocal = sessionmaker(autoflush=False, autocommit=False, bind=engine)\nBase = declarative_base()",
+        "detail": "app.database",
+        "documentation": {}
+    },
+    {
+        "label": "Base",
+        "kind": 5,
+        "importPath": "app.database",
+        "description": "app.database",
+        "peekOfCode": "Base = declarative_base()",
         "detail": "app.database",
         "documentation": {}
     },
@@ -137,7 +203,25 @@
         "kind": 6,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    rating: float\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/posts\")\nasync def get_posts():",
+        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    published: bool\n    rating: float\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello from FastAPI root directory\"}\n@app.get(\"/sqlalchemy\")\ndef test_posts(db: Session = Depends(get_db)):",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_db",
+        "kind": 2,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "def get_db():\n    db = SessionLocal()\n    try:\n        yield db\n    finally:\n        db.close()\nwhile True:\n    try:\n        connection = psycopg2.connect(host = 'localhost', database = 'fastapi', user = 'postgres', password = '197300',cursor_factory=psycopg2.extras.RealDictCursor)\n        cursor = connection.cursor()",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "test_posts",
+        "kind": 2,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "def test_posts(db: Session = Depends(get_db)):\n    return {\"Status\": \"Success\"}\n@app.get(\"/posts\")\nasync def get_posts():\n    cursor.execute(\"\"\"SELECT * FROM posts\"\"\")\n    posts = cursor.fetchall()\n    return {\"Data\": posts}\n@app.post(\"/createposts\",status_code=status.HTTP_201_CREATED)\ndef create_posts(post:Post):\n    cursor.execute(\"\"\"INSERT INTO posts (title,content,published,rating) VALUES(%s,%s,%s,%s) RETURNING * \"\"\",",
         "detail": "app.main",
         "documentation": {}
     },
@@ -182,8 +266,17 @@
         "kind": 5,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "app = FastAPI()\nwhile True:\n    try:\n        connection = psycopg2.connect(host = 'localhost', database = 'fastapi', user = 'postgres', password = '197300',cursor_factory=psycopg2.extras.RealDictCursor)\n        cursor = connection.cursor()\n        print(\"Succesfully connected to the Database\")\n        break\n    except Exception as error:\n        print(\"Truble Connecting to the Database\")\n        print(error)",
+        "peekOfCode": "app = FastAPI()\ndef get_db():\n    db = SessionLocal()\n    try:\n        yield db\n    finally:\n        db.close()\nwhile True:\n    try:\n        connection = psycopg2.connect(host = 'localhost', database = 'fastapi', user = 'postgres', password = '197300',cursor_factory=psycopg2.extras.RealDictCursor)",
         "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "kind": 6,
+        "importPath": "app.models",
+        "description": "app.models",
+        "peekOfCode": "class Post(Base):\n    __tablename__ = \"posts\"\n    id = Column(Integer, primary_key=True, nullable=False)\n    title = Column(String, nullable=False)\n    content = Column(String, nullable=False)\n    published = Column(Boolean, server_default='True', nullable=False)",
+        "detail": "app.models",
         "documentation": {}
     }
 ]

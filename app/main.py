@@ -1,14 +1,20 @@
-from fastapi import FastAPI, Response, status, HTTPException
+from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body
 import psycopg2
 from pydantic import BaseModel
+import sqlalchemy
 from typing import Optional
 from random import randrange
 import psycopg2, psycopg2.extras
 import time 
+from . import models
+from .database import engine, SessionLocal, get_db
+from sqlalchemy.orm import Session
 
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
 
 while True:
     try:
@@ -32,6 +38,11 @@ class Post(BaseModel):
 @app.get("/")
 async def root():
     return {"message": "Hello from FastAPI root directory"}
+
+@app.get("/sqlalchemy")
+def test_posts(db: Session = Depends(get_db)):
+    posts = db.query(models.Post).all()
+    return {"Data": posts}
 
 @app.get("/posts")
 async def get_posts():
