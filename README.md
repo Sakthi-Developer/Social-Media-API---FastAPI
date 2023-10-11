@@ -6,7 +6,7 @@ This is a FastAPI-based API for a social media platform, designed to provide ess
 
 ## Features
 
-**User Management:** Create, update, and authenticate users.
+**User Management:** Create, Update, and Authenticate users.
 
 **Post Creation:** Allow users to create and manage their posts.
 
