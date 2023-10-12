@@ -35,17 +35,17 @@ async def root():
 @app.get("/sqlalchemy")
 def test_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
-    return {"Data": posts}
+    return posts
 
 @app.get("/posts")
 async def get_posts(db: Session = Depends(get_db)):
     #cursor.execute("""SELECT * FROM posts""")
     #posts = cursor.fetchall()
     posts = db.query(models.Post).all()
-    return {"Data": posts}
+    return posts
 
-@app.post("/createposts",status_code=status.HTTP_201_CREATED)
-def create_posts(post:schemas.Post, db: Session =Depends(get_db)):
+@app.post("/createposts",status_code=status.HTTP_201_CREATED,response_model= schemas.post)
+def create_posts(post:schemas.CreatePost, db: Session =Depends(get_db)):
     # cursor.execute("""INSERT INTO posts (title,content,published,rating) VALUES(%s,%s,%s,%s) RETURNING * """,
     #                (post.title,post.content,post.published,post.rating))
     # new_crted_post = cursor.fetchone()
@@ -56,7 +56,7 @@ def create_posts(post:schemas.Post, db: Session =Depends(get_db)):
     db.add(new_posts)
     db.commit()
     db.refresh(new_posts)
-    return {"data": new_posts}
+    return new_posts
 
 @app.get("/posts/{id}")
 def get_post(id: int, responce: Response, db: Session = Depends(get_db)):
@@ -68,7 +68,7 @@ def get_post(id: int, responce: Response, db: Session = Depends(get_db)):
     if not fecth_post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                               detail=f"Post with {id} not found")
-    return {"text": fecth_post}
+    return fecth_post
 
 @app.delete("/posts/{id}")
 def delete_post(id: int, db: Session = Depends(get_db)):
@@ -83,7 +83,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 @app.put('/posts/{id}')
-def patch_update(id: int, post:schemas.Post, db: Session = Depends(get_db)):
+def patch_update(id: int, post:schemas.UpdatePost, db: Session = Depends(get_db)):
     # cursor.execute("""UPDATE posts SET title=%s, content=%s, published=%s WHERE id = %s RETURNING *""",
     #                (post.title, post.content, post.published, str(id)),)
     # updated_posts = cursor.fetchone()
@@ -99,4 +99,4 @@ def patch_update(id: int, post:schemas.Post, db: Session = Depends(get_db)):
     update_query.update(post.dict(),synchronize_session=False) # type: ignore
     db.commit()
     
-    return {'data': update_query.first()}
+    return update_query.first()
