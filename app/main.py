@@ -15,7 +15,6 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-
 while True:
     try:
         connection = psycopg2.connect(host = 'localhost', database = 'fastapi', user = 'postgres', password = '197300',cursor_factory=psycopg2.extras.RealDictCursor)
@@ -52,6 +51,7 @@ def create_posts(post:schemas.Post, db: Session =Depends(get_db)):
     # new_crted_post = cursor.fetchone()
     # connection.commit()
     #new_posts = models.Post(title = post.title, content = post.content, published = post.published)
+   
     new_posts = models.Post(**post.dict())   # **post.dict() Automaticaly unpack the values from the dictionary
     db.add(new_posts)
     db.commit()
@@ -62,6 +62,7 @@ def create_posts(post:schemas.Post, db: Session =Depends(get_db)):
 def get_post(id: int, responce: Response, db: Session = Depends(get_db)):
     #cursor.execute("""SELECT * FROM posts WHERE id = %s """, (str(id),))
     #fecth_post = cursor.fetchone()
+   
     fecth_post = db.query(models.Post).filter(models.Post.id == id).first()
     # post = find_post(int(id))
     if not fecth_post:
@@ -73,6 +74,7 @@ def get_post(id: int, responce: Response, db: Session = Depends(get_db)):
 def delete_post(id: int, db: Session = Depends(get_db)):
     # cursor.execute("""DELETE FROM posts WHERE id = %s """,((id),))
     # connection.commit()
+    
     delete_post = db.query(models.Post).filter(models.Post.id == id)
     if delete_post.first() == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"ID {id} dose not exist")
@@ -86,11 +88,15 @@ def patch_update(id: int, post:schemas.Post, db: Session = Depends(get_db)):
     #                (post.title, post.content, post.published, str(id)),)
     # updated_posts = cursor.fetchone()
     # connection.commit()
+    
     update_query = db.query(models.Post).where(models.Post.id == id)
     update_post = update_query.first()
+
     if not update_post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                               detail=f"Post with {id} not found")
+    
     update_query.update(post.dict(),synchronize_session=False) # type: ignore
     db.commit()
+    
     return {'data': update_query.first()}
