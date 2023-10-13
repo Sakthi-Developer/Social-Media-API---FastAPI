@@ -7,6 +7,7 @@ from typing import Optional
 from random import randrange
 import psycopg2, psycopg2.extras
 import time 
+from typing import Optional, List
 from . import models, schemas
 from .database import engine, SessionLocal, get_db
 from sqlalchemy.orm import Session
@@ -37,7 +38,7 @@ def test_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
     return posts
 
-@app.get("/posts")
+@app.get("/posts",response_model=list[schemas.post])
 async def get_posts(db: Session = Depends(get_db)):
     #cursor.execute("""SELECT * FROM posts""")
     #posts = cursor.fetchall()
@@ -58,7 +59,7 @@ def create_posts(post:schemas.CreatePost, db: Session =Depends(get_db)):
     db.refresh(new_posts)
     return new_posts
 
-@app.get("/posts/{id}")
+@app.get("/posts/{id}", response_model=schemas.post)
 def get_post(id: int, responce: Response, db: Session = Depends(get_db)):
     #cursor.execute("""SELECT * FROM posts WHERE id = %s """, (str(id),))
     #fecth_post = cursor.fetchone()
@@ -70,7 +71,7 @@ def get_post(id: int, responce: Response, db: Session = Depends(get_db)):
                               detail=f"Post with {id} not found")
     return fecth_post
 
-@app.delete("/posts/{id}")
+@app.delete("/posts/{id}", response_model=schemas.post)
 def delete_post(id: int, db: Session = Depends(get_db)):
     # cursor.execute("""DELETE FROM posts WHERE id = %s """,((id),))
     # connection.commit()
@@ -82,7 +83,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-@app.put('/posts/{id}')
+@app.put('/posts/{id}', response_model=schemas.post)
 def patch_update(id: int, post:schemas.UpdatePost, db: Session = Depends(get_db)):
     # cursor.execute("""UPDATE posts SET title=%s, content=%s, published=%s WHERE id = %s RETURNING *""",
     #                (post.title, post.content, post.published, str(id)),)
@@ -100,3 +101,12 @@ def patch_update(id: int, post:schemas.UpdatePost, db: Session = Depends(get_db)
     db.commit()
     
     return update_query.first()
+
+@app.post('/users', status_code= status.HTTP_201_CREATED)
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    print(user.dict())
+    new_user = models.User(**user.dict())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user

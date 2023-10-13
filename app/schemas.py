@@ -1,7 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 class PostBase(BaseModel):
+    id: int
     title: str
     content: str
     published: bool = True
@@ -11,10 +12,11 @@ class CreatePost(PostBase):
 class UpdatePost(BaseModel):
     published: bool
 
-class post(BaseModel):
-    title: str
-    content: str
-    published: bool
+class post(PostBase):
     created_at: datetime
     class Config:
-        orm_mode = True
+        from_attributes = True
+    
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
