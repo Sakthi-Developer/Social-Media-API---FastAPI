@@ -4,9 +4,12 @@ from .. import models, schemas
 from ..database import get_db
 from typing import List
 
-router = APIRouter()
+router = APIRouter(
+    prefix='/posts',
+    tags=['Post']
+)
 
-@router.get("/posts",response_model=List[schemas.Post])
+@router.get("/post",response_model=List[schemas.Post])
 async def get_posts(db: Session = Depends(get_db)):
     #cursor.execute("""SELECT * FROM posts""")
     #posts = cursor.fetchall()
@@ -22,7 +25,7 @@ def create_posts(post: schemas.CreatePost, db: Session = Depends(get_db)):
     return new_post  # Return the newly created post
 
 
-@router.get("/posts/{id}", response_model=schemas.Post)
+@router.get("/post/{id}", response_model=schemas.Post)
 def get_post(id: int, responce: Response, db: Session = Depends(get_db)):
     #cursor.execute("""SELECT * FROM posts WHERE id = %s """, (str(id),))
     #fecth_post = cursor.fetchone()
@@ -34,7 +37,7 @@ def get_post(id: int, responce: Response, db: Session = Depends(get_db)):
                               detail=f"Post with {id} not found")
     return fecth_post
 
-@router.delete("/posts/{id}", response_model=schemas.Post)
+@router.delete("/delete/{id}", response_model=schemas.Post)
 def delete_post(id: int, db: Session = Depends(get_db)):
     # cursor.execute("""DELETE FROM posts WHERE id = %s """,((id),))
     # connection.commit()
@@ -46,7 +49,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-@router.put('/posts/{id}',response_model=schemas.UpdatePost)
+@router.put('/update/{id}',response_model=schemas.UpdatePost)
 def patch_update(id: int, post:schemas.UpdatePost, db: Session = Depends(get_db)):
     # cursor.execute("""UPDATE posts SET title=%s, content=%s, published=%s WHERE id = %s RETURNING *""",
     #                (post.title, post.content, post.published, str(id)),)
@@ -56,7 +59,7 @@ def patch_update(id: int, post:schemas.UpdatePost, db: Session = Depends(get_db)
     update_query = db.query(models.Post).filter(models.Post.id == id)
     update_post = update_query.first()
 
-    if not update_query:
+    if update_post == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                               detail=f"Post with {id} not found")
     update_query.update(post.dict(),synchronize_session=False) # type: ignore
