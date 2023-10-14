@@ -35,3 +35,4 @@ app.include_router(auth.router)
 async def root():
     return {"message": "Hello from FastAPI root directory"}
 
+#test commit verify
