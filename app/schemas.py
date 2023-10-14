@@ -11,7 +11,7 @@ class CreatePost(PostBase):
 class UpdatePost(BaseModel):
     title: str
     content: str
-    published: bool
+    published: bool = True
 
 class Post(PostBase):
     id: int

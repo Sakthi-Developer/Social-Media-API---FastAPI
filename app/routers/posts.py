@@ -46,20 +46,20 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-@router.put('/posts/{id}', response_model=schemas.Post)
+@router.put('/posts/{id}',response_model=schemas.UpdatePost)
 def patch_update(id: int, post:schemas.UpdatePost, db: Session = Depends(get_db)):
     # cursor.execute("""UPDATE posts SET title=%s, content=%s, published=%s WHERE id = %s RETURNING *""",
     #                (post.title, post.content, post.published, str(id)),)
     # updated_posts = cursor.fetchone()
     # connection.commit()
     
-    update_query = db.query(models.Post).where(models.Post.id == id)
+    update_query = db.query(models.Post).filter(models.Post.id == id)
     update_post = update_query.first()
 
     if not update_query:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                               detail=f"Post with {id} not found")
-    update_query.update(**post.dict(),synchronize_session=False) # type: ignore
+    update_query.update(post.dict(),synchronize_session=False) # type: ignore
     db.commit()
     
-    return update_post
+    return update_query.first()
