@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Response, status, HTTPException, Depends,APIRouter
 from sqlalchemy.orm import Session
-from .. import models, schemas
+from .. import models, schemas,oauth2
 from ..database import get_db
 from typing import List
 
@@ -17,8 +17,9 @@ async def get_posts(db: Session = Depends(get_db)):
     return posts
 
 @router.post("/createposts", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
-def create_posts(post: schemas.CreatePost, db: Session = Depends(get_db)):
-    new_post = models.Post(**post.dict())  # Create a new Post object
+def create_posts(post: schemas.CreatePost, db: Session = Depends(get_db),
+                  ):
+    new_post = models.Post(post.dict())  # Create a new Post object
     db.add(new_post)  # Add the new post to the database session
     db.commit()  # Commit the transaction to insert the new post into the database
     db.refresh(new_post)  # Refresh the new_post object to get any auto-generated values
