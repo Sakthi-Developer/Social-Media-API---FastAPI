@@ -36,6 +36,6 @@ def get_current_user(token: str = Depends(oauth_scheme), db: Session = Depends(d
                                          detail=f"Fucked up credentails",
                                          headers={"WWW-Authenticate": "Bearer"})
     token_data = verify_access_token(token, credentail_exception=create_access_token) # type: ignore
-    user = db.query(models.User).filter(models.User.id == token_data.id).first()
+    user = db.query(models.Users).filter(models.Users.id == token_data.id).first()
     return user
 
