@@ -8,7 +8,7 @@ router = APIRouter(tags=['Authentication'])
 
 @router.post('/auth',status_code= status.HTTP_200_OK,response_model= schemas.Token)
 def auth(UserCerdentials: OAuth2PasswordRequestForm = Depends(),db: Session = Depends(get_db)):
-    User = db.query(models.Users).filter(models.Users.email == UserCerdentials.username).first()
+    User = db.query(models.User).filter(models.User.email == UserCerdentials.username).first()
 
     if not User:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f"User with {UserCerdentials.username} is not found.")
