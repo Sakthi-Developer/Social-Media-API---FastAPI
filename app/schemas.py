@@ -7,20 +7,6 @@ class PostBase(BaseModel):
     content: str
     published: bool = True
 
-class CreatePost(PostBase):
-    pass
-class UpdatePost(BaseModel):
-    title: str
-    content: str
-    published: bool = True
-
-class Post(PostBase):
-    id: int
-    owner_id: int
-    created_at: datetime
-    class Config:
-        from_attributes = True
-    
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
@@ -36,6 +22,20 @@ class UserAuth(BaseModel):
     email: EmailStr
     password: str
 
+class CreatePost(PostBase):
+    pass
+class UpdatePost(BaseModel):
+    title: str
+    content: str
+    published: bool = True
+
+class Post(PostBase):
+    id: int
+    owner_id: int
+    created_at: datetime
+    owner: UserOut
+    class Config:
+        from_attributes = True
 class Token(BaseModel):
     access_token:str
     token_type: str
