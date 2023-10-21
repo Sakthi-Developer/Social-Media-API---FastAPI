@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 @router.get("/post",response_model=List[schemas.Post])
-async def get_posts(db: Session = Depends(get_db)):
+async def get_posts(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     #cursor.execute("""SELECT * FROM posts""")
     #posts = cursor.fetchall()
     posts = db.query(models.Post).all()
@@ -48,10 +48,9 @@ def delete_post(id: int, db: Session = Depends(get_db), current_user = Depends(o
     if post == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"ID {id} dose not exist")
     
-    if post.id != current_user.id:
+    if post.owner_id != current_user.id:
         raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail= "Not Authorized to perfom request action")
     
-
     delete_query.delete(synchronize_session=False)
     db.commit()
 
@@ -70,6 +69,8 @@ def patch_update(id: int, post:schemas.UpdatePost, db: Session = Depends(get_db)
     if update_post == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                               detail=f"Post with {id} not found")
+    if update_post.owner_id != current_user.id:
+        raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail= "Not Authorized to perfom request action")
     update_query.update(post.dict(),synchronize_session=False) # type: ignore
     db.commit()
     
