@@ -1,1 +1,4 @@
 # Write the file that you don't want to push into the git
+__pycache__
+venv/
+.env
