@@ -36,7 +36,7 @@ def get_current_user(token: str = Depends(oauth_scheme), db: Session = Depends(d
     credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                          detail=f"Fucked up credentails",
                                          headers={"WWW-Authenticate": "Bearer"})
-    token_data = verify_access_token(token, credentail_exception=create_access_token) # type: ignore
+    token_data = verify_access_token(token, credentail_exception=credential_exception) # type: ignore
     user = db.query(models.User).filter(models.User.id == token_data.id).first()
     return user
 
